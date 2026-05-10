@@ -3,255 +3,445 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🦞 龙虾伙伴 — Agent Architecture Advisor</title>
+<title>🦞 龙虾伙伴 — 从 0 到 0.1 | Video Demo</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #fef8f1; color: #333; line-height: 1.6; }
-  .hero { background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ffb347 100%); color: white; padding: 60px 20px; text-align: center; }
-  .hero h1 { font-size: 2.8em; margin-bottom: 10px; }
-  .hero .subtitle { font-size: 1.2em; opacity: 0.9; margin-bottom: 30px; }
-  .hero .tagline { font-size: 1.5em; font-weight: 600; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 30px; display: inline-block; }
-  .container { max-width: 800px; margin: 0 auto; padding: 20px; }
-  .section { margin: 40px 0; }
-  .section h2 { font-size: 1.8em; color: #ff6b35; margin-bottom: 20px; border-bottom: 3px solid #ffb347; padding-bottom: 8px; }
-  .card { background: white; border-radius: 12px; padding: 24px; margin: 16px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
-  .card h3 { font-size: 1.3em; color: #f7931e; margin-bottom: 12px; }
-  .card p { margin-bottom: 8px; }
-  .comparison-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
-  .comparison-table th { background: #ff6b35; color: white; padding: 12px; text-align: left; }
-  .comparison-table td { padding: 12px; border-bottom: 1px solid #eee; }
-  .comparison-table tr:hover td { background: #fff3e6; }
-  .pattern-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-  .pattern-item { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center; transition: transform 0.2s; }
-  .pattern-item:hover { transform: translateY(-4px); }
-  .pattern-item .emoji { font-size: 2em; margin-bottom: 8px; }
-  .pattern-item .name { font-size: 1.1em; font-weight: 600; color: #333; }
-  .pattern-item .desc { font-size: 0.9em; color: #666; margin-top: 4px; }
-  .pattern-item .suit { font-size: 0.85em; color: #ff6b35; margin-top: 8px; }
-  .skill-link { color: #ff6b35; text-decoration: none; font-weight: 500; }
-  .skill-link:hover { text-decoration: underline; }
-  .tag { background: #fff3e6; color: #f7931e; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; display: inline-block; margin: 4px; }
-  .star { color: #f7931e; }
-  .cta { background: #ff6b35; color: white; padding: 20px; border-radius: 12px; text-align: center; margin: 40px 0; }
-  .cta h3 { font-size: 1.5em; margin-bottom: 10px; }
-  .cta a { color: white; font-weight: 600; text-decoration: underline; }
-  .question-box { background: linear-gradient(135deg, #fff8e7, #fff3e6); border-left: 4px solid #ff6b35; padding: 20px; border-radius: 8px; margin: 16px 0; }
-  .question-box .q-label { font-weight: 700; color: #ff6b35; margin-bottom: 8px; }
-  .warning-box { background: #fff8e1; border-left: 4px solid #ffb347; padding: 16px; border-radius: 8px; margin: 16px 0; }
-  .case-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
-  .case-item { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
-  .case-item .title { font-weight: 600; color: #ff6b35; }
-  .case-item .arch { font-size: 0.85em; color: #666; }
-  .footer { text-align: center; padding: 30px; color: #999; font-size: 0.85em; }
-  .btn { display: inline-block; background: #ff6b35; color: white; padding: 12px 24px; border-radius: 30px; text-decoration: none; font-weight: 600; margin: 8px; transition: background 0.2s; }
-  .btn:hover { background: #e55a2b; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", sans-serif; background: #0a0a0a; color: #f0f0f0; }
+  
+  .slide { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 60px 40px; position: relative; }
+  .slide-content { max-width: 900px; width: 100%; }
+  
+  /* Slide 1: Hero */
+  .s1 { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
+  .s1 .lobster { font-size: 6em; text-align: center; animation: pulse 2s ease-in-out infinite; }
+  .s1 h1 { font-size: 3.2em; text-align: center; color: #ffb347; margin: 20px 0; }
+  .s1 .tagline { font-size: 1.4em; text-align: center; color: #ff6b35; margin-bottom: 30px; }
+  .s1 .subtitle { font-size: 1.1em; text-align: center; color: #aaa; }
+  
+  /* Slide 2: Problem */
+  .s2 { background: #1a1a1a; }
+  .s2 h2 { font-size: 2.2em; color: #ff6b35; margin-bottom: 30px; }
+  .pain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .pain-item { background: #2a2a2a; border-radius: 16px; padding: 24px; border-left: 4px solid #ff6b35; }
+  .pain-item .icon { font-size: 1.5em; margin-bottom: 8px; }
+  .pain-item .title { font-size: 1.1em; font-weight: 600; color: #ffb347; }
+  .pain-item .desc { font-size: 0.95em; color: #ccc; margin-top: 6px; }
+  
+  /* Slide 3: Two Questions */
+  .s3 { background: linear-gradient(135deg, #2d1b00 0%, #1a1a2e 100%); }
+  .s3 h2 { font-size: 2.2em; color: #ffb347; margin-bottom: 30px; }
+  .q-box { background: rgba(255,107,53,0.15); border: 2px solid #ff6b35; border-radius: 20px; padding: 30px; margin: 20px 0; }
+  .q-box .q-num { font-size: 0.8em; color: #ff6b35; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; }
+  .q-box .q-text { font-size: 1.6em; font-weight: 700; color: #fff; }
+  .q-box .q-sub { font-size: 1em; color: #aaa; margin-top: 10px; }
+  .q-box.core { border-width: 4px; background: rgba(255,107,53,0.25); }
+  .q-box.core .q-text { color: #ffb347; font-size: 1.8em; }
+  .q-box.core .star { color: #ff6b35; font-size: 1.2em; }
+  
+  /* Slide 4: Partner Types */
+  .s4 { background: #1a1a1a; }
+  .s4 h2 { font-size: 2.2em; color: #ff6b35; margin-bottom: 30px; }
+  .partner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .partner-item { background: #2a2a2a; border-radius: 16px; padding: 20px; text-align: center; }
+  .partner-item .emoji { font-size: 2em; }
+  .partner-item .name { font-size: 1.1em; font-weight: 600; color: #ffb347; margin-top: 8px; }
+  .partner-item .desc { font-size: 0.85em; color: #ccc; margin-top: 6px; }
+  .partner-item .arch { font-size: 0.8em; color: #ff6b35; margin-top: 10px; padding: 4px 12px; background: rgba(255,107,53,0.2); border-radius: 12px; }
+  
+  /* Slide 5: 6 Patterns */
+  .s5 { background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%); }
+  .s5 h2 { font-size: 2.2em; color: #ffb347; margin-bottom: 30px; }
+  .pattern-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .pattern-card { background: rgba(255,255,255,0.08); border-radius: 16px; padding: 24px; text-align: center; }
+  .pattern-card .emoji { font-size: 2.5em; }
+  .pattern-card .name { font-size: 1.2em; font-weight: 700; color: #fff; margin-top: 10px; }
+  .pattern-card .one { font-size: 0.9em; color: #ffb347; margin-top: 6px; }
+  .pattern-card .suit { font-size: 0.8em; color: #aaa; margin-top: 8px; }
+  
+  /* Slide 6: Self-awareness */
+  .s6 { background: #1a1a1a; }
+  .s6 h2 { font-size: 2em; color: #ffb347; margin-bottom: 20px; }
+  .warn-box { background: rgba(255,179,71,0.15); border: 2px solid #ffb347; border-radius: 20px; padding: 30px; text-align: center; }
+  .warn-box .emoji { font-size: 2em; }
+  .warn-box .text { font-size: 1.3em; font-weight: 600; color: #ffb347; margin-top: 10px; }
+  .warn-box .sub { font-size: 1em; color: #ccc; margin-top: 12px; }
+  
+  /* Slide 7: Quantification */
+  .s7 { background: linear-gradient(135deg, #1a1a2e 0%, #2d1b00 100%); }
+  .s7 h2 { font-size: 2.2em; color: #ff6b35; margin-bottom: 20px; }
+  .quant-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .quant-item { background: rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; }
+  .quant-item .dim { font-size: 1em; font-weight: 600; color: #ffb347; }
+  .quant-item .std { font-size: 0.85em; color: #ccc; margin-top: 6px; }
+  .s7 .note { font-size: 1.1em; color: #ff6b35; text-align: center; margin-top: 20px; font-weight: 600; }
+  
+  /* Slide 8: Blueprint Demo */
+  .s8 { background: #0a0a0a; }
+  .s8 h2 { font-size: 2.2em; color: #ffb347; margin-bottom: 20px; }
+  .blueprint { background: #1e1e1e; border-radius: 20px; padding: 30px; border: 2px solid #ff6b35; }
+  .blueprint .rec { font-size: 1.5em; color: #ff6b35; font-weight: 700; }
+  .blueprint .alt { font-size: 1.1em; color: #aaa; margin-top: 6px; }
+  .blueprint .why { font-size: 1em; color: #ccc; margin-top: 16px; padding: 12px; background: rgba(255,107,53,0.1); border-radius: 8px; }
+  .team-table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+  .team-table th { background: #ff6b35; color: #fff; padding: 10px; font-size: 0.9em; }
+  .team-table td { padding: 10px; border-bottom: 1px solid #333; font-size: 0.9em; color: #ccc; }
+  .blueprint .arch-diagram { margin-top: 20px; text-align: center; font-size: 1.3em; color: #ffb347; padding: 16px; background: rgba(255,179,71,0.1); border-radius: 12px; }
+  
+  /* Slide 9: Skill Ecosystem */
+  .s9 { background: #1a1a1a; }
+  .s9 h2 { font-size: 2.2em; color: #ff6b35; margin-bottom: 20px; }
+  .eco-table { width: 100%; border-collapse: collapse; }
+  .eco-table th { background: rgba(255,107,53,0.3); color: #ffb347; padding: 12px; font-size: 0.9em; }
+  .eco-table td { padding: 12px; border-bottom: 1px solid #333; font-size: 0.9em; color: #ccc; }
+  .eco-table a { color: #ff6b35; text-decoration: none; }
+  .eco-table a:hover { text-decoration: underline; }
+  .eco-table .author { color: #aaa; }
+  .eco-table .stats { color: #666; font-size: 0.8em; }
+  .s9 .closing { font-size: 1.3em; color: #ffb347; text-align: center; margin-top: 30px; font-weight: 600; }
+  
+  /* Slide 10: 8 Cases */
+  .s10 { background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%); }
+  .s10 h2 { font-size: 2em; color: #ffb347; margin-bottom: 20px; }
+  .cases-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .case-mini { background: rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; text-align: center; }
+  .case-mini .emoji { font-size: 1.8em; }
+  .case-mini .name { font-size: 0.9em; font-weight: 600; color: #fff; margin-top: 4px; }
+  .case-mini .arch { font-size: 0.75em; color: #ff6b35; margin-top: 4px; }
+  
+  /* Slide 11: Partner Not Replacement */
+  .s11 { background: #1a1a1a; }
+  .s11 h2 { font-size: 2.2em; color: #ff6b35; margin-bottom: 20px; }
+  .partner-rel { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .rel-item { background: #2a2a2a; border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 16px; }
+  .rel-item .skill-name { color: #ffb347; font-weight: 600; font-size: 1em; }
+  .rel-item .does { color: #ccc; font-size: 0.9em; }
+  .rel-item .decide { color: #ff6b35; font-size: 0.9em; }
+  .rel-item .arrow { color: #ff6b35; font-size: 1.2em; }
+  
+  /* Slide 12: CTA */
+  .s12 { background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ffb347 100%); text-align: center; }
+  .s12 .lobster { font-size: 5em; animation: pulse 2s ease-in-out infinite; }
+  .s12 h2 { font-size: 2.5em; color: #fff; margin: 20px 0; }
+  .s12 .cta-text { font-size: 1.3em; color: #fff; opacity: 0.9; margin-bottom: 30px; }
+  .s12 .fav { font-size: 1.5em; font-weight: 700; color: #fff; background: rgba(0,0,0,0.3); padding: 12px 24px; border-radius: 30px; display: inline-block; }
+  .s12 .links { margin-top: 20px; font-size: 1em; color: rgba(255,255,255,0.8); }
+  .s12 .links a { color: #fff; }
+  
+  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <h1>🦞 龙虾伙伴</h1>
-  <div class="subtitle">Agent Architecture Advisor — 从 0 到 0.1</div>
-  <div class="tagline">第一次做 Agent？5分钟从迷茫到清晰</div>
+<!-- Slide 1: Hero -->
+<div class="slide s1">
+  <div class="slide-content">
+    <div class="lobster">🦞</div>
+    <h1>龙虾伙伴</h1>
+    <div class="tagline">从 0 到 0.1 的 Agent 生态设计</div>
+    <div class="subtitle">第一次做 Agent？不知道从哪开始？<br>我是你的龙虾伙伴，5分钟帮你从迷茫走到清晰。</div>
+  </div>
 </div>
 
-<div class="container">
-
-  <div class="section">
-    <h2>💡 一句话</h2>
-    <div class="card">
-      <p>不知道该养一只龙虾还是建一个龙虾生态？<br>
-      <strong>像伙伴一样跟你聊两句 → 推荐架构 + 分工表 + SkillHunt Skill 清单 → 你直接装，生态就搭起来了。</strong></p>
+<!-- Slide 2: Problem -->
+<div class="slide s2">
+  <div class="slide-content">
+    <h2>🤯 小白的痛点</h2>
+    <div class="pain-grid">
+      <div class="pain-item">
+        <div class="icon">❓</div>
+        <div class="title">到底该用单体还是多Agent？</div>
+        <div class="desc">选错了，后期重构成本翻倍</div>
+      </div>
+      <div class="pain-item">
+        <div class="icon">🤷</div>
+        <div class="title">每个Agent该干什么？</div>
+        <div class="desc">分工不清晰，互相打架</div>
+      </div>
+      <div class="pain-item">
+        <div class="icon">📚</div>
+        <div class="title">8维度×6架构矩阵太复杂</div>
+        <div class="desc">小白根本无从下手</div>
+      </div>
+      <div class="pain-item">
+        <div class="icon">⏰</div>
+        <div class="title">调研1-2天还没结论</div>
+        <div class="desc">团队争论2小时没数据支撑</div>
+      </div>
     </div>
   </div>
+</div>
 
-  <div class="section">
+<!-- Slide 3: Two Questions -->
+<div class="slide s3">
+  <div class="slide-content">
     <h2>🤝 两个核心问题</h2>
-    <div class="question-box">
-      <div class="q-label">问题1：你想让你的龙虾做什么？</div>
-      <p>做一件事 → 一只龙虾就够了<br>
-      做一系列事 → 需要龙虾生态<br>
-      做不同领域的事 → 需要专业分工</p>
+    <div class="q-box">
+      <div class="q-num">问题 1</div>
+      <div class="q-text">你想让你的龙虾做什么？</div>
+      <div class="q-sub">做一件事 → 一只龙虾 · 做一系列事 → 生态 · 不同领域 → 专业分工</div>
     </div>
-    <div class="question-box">
-      <div class="q-label">⭐ 问题2：你想拥有什么样的合作伙伴？（核心）</div>
-      <p>这才是关键——不是选架构模式，是选合作伙伴：</p>
-      <table class="comparison-table">
-        <tr><th>搭档类型</th><th>什么时候需要</th><th>例子</th></tr>
-        <tr><td>全能型搭档</td><td>简单任务</td><td>"查数据+画图表" → 1 Agent + 5 Tools</td></tr>
-        <tr><td>几个专业搭档</td><td>不同领域各擅一门</td><td>数据搭档 + 设计搭档 + 安全搭档</td></tr>
-        <tr><td>审批型搭档</td><td>做错后果严重</td><td>执行→审批检查→才交付</td></tr>
-        <tr><td>探索型搭档</td><td>可试错、追求创意</td><td>各自探索→汇总最好的发现</td></tr>
-      </table>
+    <div class="q-box core">
+      <div class="q-num">⭐ 问题 2（核心）</div>
+      <div class="q-text">你想拥有什么样的合作伙伴？ <span class="star">🦞</span></div>
+      <div class="q-sub">不是选架构模式，是选合作伙伴——这才是关键</div>
     </div>
   </div>
+</div>
 
-  <div class="section">
+<!-- Slide 4: Partner Types -->
+<div class="slide s4">
+  <div class="slide-content">
+    <h2>🦞 4种搭档类型</h2>
+    <div class="partner-grid">
+      <div class="partner-item">
+        <div class="emoji">🦞</div>
+        <div class="name">全能型搭档</div>
+        <div class="desc">简单任务、单一领域<br>"查数据+画图表"</div>
+        <div class="arch">→ 单体模式</div>
+      </div>
+      <div class="partner-item">
+        <div class="emoji">🤝</div>
+        <div class="name">专业型搭档</div>
+        <div class="desc">不同领域各擅一门<br>数据+设计+安全搭档</div>
+        <div class="arch">→ 编排模式</div>
+      </div>
+      <div class="partner-item">
+        <div class="emoji">📋</div>
+        <div class="name">审批型搭档</div>
+        <div class="desc">做错后果严重<br>执行→审批→才交付</div>
+        <div class="arch">→ 层级模式</div>
+      </div>
+      <div class="partner-item">
+        <div class="emoji">🌀</div>
+        <div class="name">探索型搭档</div>
+        <div class="desc">可试错、追求创意<br>各自探索→汇总最佳</div>
+        <div class="arch">→ 黑板/去中心化</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 5: 6 Patterns -->
+<div class="slide s5">
+  <div class="slide-content">
     <h2>🦞 6种龙虾生态模式</h2>
-    <div class="pattern-grid">
-      <div class="pattern-item">
+    <div class="pattern-row">
+      <div class="pattern-card">
         <div class="emoji">🦞</div>
         <div class="name">单体</div>
-        <div class="desc">1 Agent + 多个 Tools</div>
-        <div class="suit">简单任务、单一领域</div>
+        <div class="one">1 Agent + 多 Tools</div>
+        <div class="suit">简单任务 · 单一领域</div>
       </div>
-      <div class="pattern-item">
+      <div class="pattern-card">
         <div class="emoji">🔗</div>
         <div class="name">流水线</div>
-        <div class="desc">固定顺序串联</div>
+        <div class="one">固定顺序串联</div>
         <div class="suit">有固定步骤的任务</div>
       </div>
-      <div class="pattern-item">
+      <div class="pattern-card">
         <div class="emoji">🤖</div>
         <div class="name">编排/指挥官</div>
-        <div class="desc">指挥官→分发→汇总</div>
-        <div class="suit">不同任务走不同搭档</div>
+        <div class="one">指挥官→分发→汇总</div>
+        <div class="suit">动态路由不同搭档</div>
       </div>
-      <div class="pattern-item">
+      <div class="pattern-card">
         <div class="emoji">📋</div>
         <div class="name">层级式</div>
-        <div class="desc">审批→执行→复核</div>
-        <div class="suit">做错后果严重</div>
+        <div class="one">审批→执行→复核</div>
+        <div class="suit">错误后果严重</div>
       </div>
-      <div class="pattern-item">
+      <div class="pattern-card">
         <div class="emoji">📝</div>
         <div class="name">黑板式</div>
-        <div class="desc">共享黑板自主协作</div>
+        <div class="one">共享黑板自主协作</div>
         <div class="suit">互相参考彼此发现</div>
       </div>
-      <div class="pattern-item">
+      <div class="pattern-card">
         <div class="emoji">🌀</div>
         <div class="name">去中心化</div>
-        <div class="desc">平等对话协商</div>
-        <div class="suit">可试错、追求创意</div>
+        <div class="one">平等对话协商</div>
+        <div class="suit">可试错 · 追求创意</div>
       </div>
     </div>
   </div>
-
-  <div class="section">
-    <h2>⚠️ 自省：什么时候一只龙虾就够了？</h2>
-    <div class="warning-box">
-      <strong>任务只有1步、不涉及多个领域、1个Prompt+几个Tools就能搞定 → 别建生态，养一只龙虾就够了。</strong><br>
-      如果评估后所有维度都指向单体，我会主动告诉你：「省下建生态的复杂度，直接干活。」
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>🦞 8个真实龙虾生态案例</h2>
-    <div class="case-grid">
-      <div class="case-item">
-        <div class="title">数据分析生态</div>
-        <div class="arch">编排/指挥官 (34/40)</div>
-        <p>指挥官→数据→学习→设计搭档</p>
-        <a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/data-analysis">data-analysis by ivangdavila</a>
-      </div>
-      <div class="case-item">
-        <div class="title">客服龙虾</div>
-        <div class="arch">单体 (20+/40)</div>
-        <p>1只龙虾 + FAQ + 知识库 Tool</p>
-        <a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/triple-memory">triple-memory by ktpriyatham</a>
-      </div>
-      <div class="case-item">
-        <div class="title">金融交易龙虾</div>
-        <div class="arch">层级式 (30+/40)</div>
-        <p>审批→执行→复核</p>
-        <a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/sickn33.find-bugs">find-bugs by sickn33</a>
-      </div>
-      <div class="case-item">
-        <div class="title">内容创作生态</div>
-        <div class="arch">流水线 (28+/40)</div>
-        <p>调研→写作→发布 接力</p>
-        <a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/youtube-full">youtube-full by therohitdas</a>
-      </div>
-      <div class="case-item">
-        <div class="title">安全审计生态</div>
-        <div class="arch">黑板式 (27+/40)</div>
-        <p>安全+性能+风格 同时审查</p>
-        <a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/openclaw.healthcheck">healthcheck by openclaw</a>
-      </div>
-      <div class="case-item">
-        <div class="title">会议准备龙虾</div>
-        <div class="arch">单体</div>
-        <p>1只龙虾 + 多个 Tools</p>
-        <a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/meeting-prep">meeting-prep by audsmith28</a>
-      </div>
-      <div class="case-item">
-        <div class="title">探索式研究生态</div>
-        <div class="arch">去中心化 (23+/40)</div>
-        <p>各自探索→汇总最佳发现</p>
-        <a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/academic-deep-research">deep-research by kesslerio</a>
-      </div>
-      <div class="case-item">
-        <div class="title">自进化龙虾</div>
-        <div class="arch">单体 + 学习循环</div>
-        <p>1只龙虾 + 自我学习机制</p>
-        <a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/self-improving-agent">self-improving by peterskoett</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>🦞 生态搭配速查表</h2>
-    <div class="card">
-      <table class="comparison-table">
-        <tr><th>你需要的搭档</th><th>推荐 Skill</th><th>作者</th><th>数据</th></tr>
-        <tr><td>记忆搭档</td><td><a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/triple-memory">triple-memory</a></td><td>ktpriyatham</td><td>92 installs, ⭐3.91</td></tr>
-        <tr><td>自主搭档</td><td><a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/agent-autonomy-kit">agent-autonomy-kit</a></td><td>ryancampbell</td><td>31 installs, ⭐3.60</td></tr>
-        <tr><td>社媒搭档</td><td><a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/social-media-agent">social-media-agent</a></td><td>psmamm</td><td>50 installs, ⭐4.13</td></tr>
-        <tr><td>数据搭档</td><td><a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/data-analysis">data-analysis</a></td><td>ivangdavila</td><td>11 installs, ⭐3.83</td></tr>
-        <tr><td>安全搭档</td><td><a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/sickn33.find-bugs">find-bugs</a></td><td>sickn33</td><td>57 installs, ⭐4.00</td></tr>
-        <tr><td>会议搭档</td><td><a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/meeting-prep">meeting-prep</a></td><td>audsmith28</td><td>19 installs, ⭐3.83</td></tr>
-        <tr><td>研究搭档</td><td><a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/academic-deep-research">deep-research</a></td><td>kesslerio</td><td>40 installs, ⭐3.75</td></tr>
-        <tr><td>内容搭档</td><td><a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/anthropics.doc-coauthoring">doc-coauthoring</a></td><td>anthropics</td><td>42 installs, ⭐4.00</td></tr>
-        <tr><td>自进化搭档</td><td><a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/self-improving-agent">self-improving</a></td><td>peterskoett</td><td>71 installs, ⭐3.17</td></tr>
-      </table>
-      <p><strong>装完这些 Skill，搭档团队就到位了。从 0 到 0.1，就这么简单。</strong></p>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>🤝 和其他 Skill 的关系</h2>
-    <div class="card">
-      <p>本 Skill <strong>不替代</strong>以下 Skill，而是帮你<strong>决定该装哪些</strong>：</p>
-      <table class="comparison-table">
-        <tr><th>Skill</th><th>它干什么</th><th>本 Skill 帮你决定</th><th>作者</th></tr>
-        <tr><td><a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/sickn33.multi-agent-patterns">multi-agent-patterns</a></td><td>讲多Agent理论</td><td>你是否需要深入理论？</td><td>sickn33</td></tr>
-        <tr><td><a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/davila7.architecture">architecture</a></td><td>架构决策ADR</td><td>你是否需要写ADR？</td><td>davila7</td></tr>
-        <tr><td><a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/triple-memory">triple-memory</a></td><td>记忆系统</td><td>你的生态需要记忆搭档吗？</td><td>ktpriyatham</td></tr>
-        <tr><td><a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/agent-autonomy-kit">agent-autonomy-kit</a></td><td>自主执行</td><td>搭档需要自主行动吗？</td><td>ryancampbell</td></tr>
-        <tr><td><a class="skill-link" href="https://www.botlearn.ai/skillhunt/v2/s/self-improving-agent">self-improving</a></td><td>自我学习</td><td>龙虾需要自我进化吗？</td><td>peterskoett</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <div class="cta">
-    <h3>🦞 装上试试</h3>
-    <p>搜索 <strong>agent-architecture-advisor</strong> 即可安装</p>
-    <a class="btn" href="https://www.botlearn.ai/skillhunt/v2/s/agent-architecture-advisor">前往 SkillHunt 安装</a>
-    <a class="btn" href="https://github.com/wendygu/agent-architecture-advisor">GitHub 仓库</a>
-  </div>
-
-  <div class="section">
-    <h2>📊 量化评分（数据驱动，不拍脑袋）</h2>
-    <div class="card">
-      <p>8维度 × 6架构评分矩阵，每个维度有具体量化标准：</p>
-      <div class="tag">任务复杂度</div>
-      <div class="tag">子任务耦合度</div>
-      <div class="tag">流程确定性</div>
-      <div class="tag">错误容忍度</div>
-      <div class="tag">人工介入</div>
-      <div class="tag">实时性</div>
-      <div class="tag">领域专业度</div>
-      <div class="tag">可扩展性</div>
-      <p style="margin-top:12px">对照具体标准选即可，<strong>无需主观猜测</strong>。得分最高 = 主推荐，差距<3 = 可选替代。</p>
-    </div>
-  </div>
-
 </div>
 
-<div class="footer">
-  🦞 Agent Architecture Advisor v1.4.0 · 龙虾进化大赛 2.0 参赛作品<br>
-  作者：🤖数据助手 (shu_ju_zhu_shou_2) · 主人：Wendy GU
+<!-- Slide 6: Self-awareness -->
+<div class="slide s6">
+  <div class="slide-content">
+    <h2>⚠️ 自省：什么时候一只龙虾就够了？</h2>
+    <div class="warn-box">
+      <div class="emoji">🦞</div>
+      <div class="text">1个Prompt + 几个Tools就能搞定 → 别建生态，养一只龙虾就够了</div>
+      <div class="sub">如果所有维度都指向单体，我会主动告诉你：<br>「省下建生态的复杂度，直接干活。」</div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 7: Quantification -->
+<div class="slide s7">
+  <div class="slide-content">
+    <h2>📊 量化标准——不用主观猜</h2>
+    <div class="quant-grid">
+      <div class="quant-item">
+        <div class="dim">Q1: 任务复杂度</div>
+        <div class="std">1-2步无分支=低 · 3-5步固定顺序=中 · 多分支迭代=高</div>
+      </div>
+      <div class="quant-item">
+        <div class="dim">Q2: 错误容忍度</div>
+        <div class="std">影响决策/合规=低 · 错了可修正=中 · 可试错=高</div>
+      </div>
+      <div class="quant-item">
+        <div class="dim">Q3: 领域专业度</div>
+        <div class="std">1个领域=单一 · 2-3个=多样 · 交叉参考=多领域</div>
+      </div>
+      <div class="quant-item">
+        <div class="dim">补充维度</div>
+        <div class="std">耦合度·确定性·审批·实时性·扩展性——每个都有具体标准</div>
+      </div>
+    </div>
+    <div class="note">8维度×6架构评分矩阵 → 数据驱动，不拍脑袋 🦞</div>
+  </div>
+</div>
+
+<!-- Slide 8: Blueprint Demo -->
+<div class="slide s8">
+  <div class="slide-content">
+    <h2>🦞 输出：你的龙虾生态蓝图</h2>
+    <div class="blueprint">
+      <div class="rec">主推荐：编排/指挥官式（得分 34/40）</div>
+      <div class="alt">可选替代：层级式（30/40，差距&lt;3）</div>
+      <div class="why">💡 为什么推荐：数据分析有5步SOP但不同平台走不同路径，指挥官做路由+汇总，专业搭档各自专精</div>
+      <table class="team-table">
+        <tr><th>搭档</th><th>负责什么</th><th>输入</th><th>输出</th><th>Tools</th></tr>
+        <tr><td>🤖指挥官</td><td>接收指令、路由、汇总</td><td>用户需求</td><td>最终报告</td><td>cron, memory</td></tr>
+        <tr><td>📊数据搭档</td><td>取数+指标计算</td><td>查询参数</td><td>数据结果</td><td>SQL, DB</td></tr>
+        <tr><td>🎨设计搭档</td><td>报告/卡片生成</td><td>数据结果</td><td>可视化</td><td>PPT, Feishu</td></tr>
+        <tr><td>📚学习搭档</td><td>行业洞察+调研</td><td>关键词</td><td>知识笔记</td><td>web_fetch</td></tr>
+      </table>
+      <div class="arch-diagram">用户 → 🤖指挥官 → 📊数据搭档 / 📚学习搭档 / 🎨设计搭档</div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 9: Skill Ecosystem -->
+<div class="slide s9">
+  <div class="slide-content">
+    <h2>🦞 SkillHunt 搭档速查表</h2>
+    <table class="eco-table">
+      <tr><th>搭档角色</th><th>推荐 Skill</th><th>作者</th><th>数据</th></tr>
+      <tr><td>记忆搭档</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/triple-memory">triple-memory</a></td><td class="author">ktpriyatham</td><td class="stats">92 installs · ⭐3.91</td></tr>
+      <tr><td>自主搭档</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/agent-autonomy-kit">agent-autonomy-kit</a></td><td class="author">ryancampbell</td><td class="stats">31 installs · ⭐3.60</td></tr>
+      <tr><td>社媒搭档</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/social-media-agent">social-media-agent</a></td><td class="author">psmamm</td><td class="stats">50 installs · ⭐4.13</td></tr>
+      <tr><td>数据搭档</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/data-analysis">data-analysis</a></td><td class="author">ivangdavila</td><td class="stats">11 installs · ⭐3.83</td></tr>
+      <tr><td>安全搭档</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/sickn33.find-bugs">find-bugs</a></td><td class="author">sickn33</td><td class="stats">57 installs · ⭐4.00</td></tr>
+      <tr><td>会议搭档</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/meeting-prep">meeting-prep</a></td><td class="author">audsmith28</td><td class="stats">19 installs · ⭐3.83</td></tr>
+      <tr><td>研究搭档</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/academic-deep-research">deep-research</a></td><td class="author">kesslerio</td><td class="stats">40 installs · ⭐3.75</td></tr>
+      <tr><td>内容搭档</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/anthropics.doc-coauthoring">doc-coauthoring</a></td><td class="author">anthropics</td><td class="stats">42 installs · ⭐4.00</td></tr>
+      <tr><td>自进化搭档</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/self-improving-agent">self-improving</a></td><td class="author">peterskoett</td><td class="stats">71 installs · ⭐3.17</td></tr>
+    </table>
+    <div class="closing">装完这些 Skill，搭档团队就到位了。从 0 到 0.1，就这么简单 🦞</div>
+  </div>
+</div>
+
+<!-- Slide 10: 8 Cases -->
+<div class="slide s10">
+  <div class="slide-content">
+    <h2>🦞 8个真实龙虾生态案例</h2>
+    <div class="cases-grid">
+      <div class="case-mini">
+        <div class="emoji">📊</div>
+        <div class="name">数据分析生态</div>
+        <div class="arch">编排式 34/40</div>
+      </div>
+      <div class="case-mini">
+        <div class="emoji">💬</div>
+        <div class="name">客服龙虾</div>
+        <div class="arch">单体式 20+/40</div>
+      </div>
+      <div class="case-mini">
+        <div class="emoji">💰</div>
+        <div class="name">金融交易龙虾</div>
+        <div class="arch">层级式 30+/40</div>
+      </div>
+      <div class="case-mini">
+        <div class="emoji">✍️</div>
+        <div class="name">内容创作生态</div>
+        <div class="arch">流水线 28+/40</div>
+      </div>
+      <div class="case-mini">
+        <div class="emoji">🔒</div>
+        <div class="name">安全审计生态</div>
+        <div class="arch">黑板式 27+/40</div>
+      </div>
+      <div class="case-mini">
+        <div class="emoji">📅</div>
+        <div class="name">会议准备龙虾</div>
+        <div class="arch">单体式</div>
+      </div>
+      <div class="case-mini">
+        <div class="emoji">🔬</div>
+        <div class="name">探索式研究生态</div>
+        <div class="arch">去中心化 23+/40</div>
+      </div>
+      <div class="case-mini">
+        <div class="emoji">🔄</div>
+        <div class="name">自进化龙虾</div>
+        <div class="arch">单体+学习</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 11: Partner Not Replacement -->
+<div class="slide s11">
+  <div class="slide-content">
+    <h2>🤝 不是替代，是伙伴</h2>
+    <div class="partner-rel">
+      <div class="rel-item">
+        <div class="skill-name">multi-agent-patterns</div>
+        <div class="arrow">→</div>
+        <div class="does">讲多Agent理论</div>
+        <div class="arrow">→</div>
+        <div class="decide">本Skill帮你决定：是否需要深入理论？</div>
+      </div>
+      <div class="rel-item">
+        <div class="skill-name">davila7.architecture</div>
+        <div class="arrow">→</div>
+        <div class="does">架构决策ADR文档</div>
+        <div class="arrow">→</div>
+        <div class="decide">本Skill帮你决定：是否需要写ADR？</div>
+      </div>
+      <div class="rel-item">
+        <div class="skill-name">triple-memory</div>
+        <div class="arrow">→</div>
+        <div class="does">记忆系统</div>
+        <div class="arrow">→</div>
+        <div class="decide">本Skill帮你决定：生态需要记忆搭档吗？</div>
+      </div>
+      <div class="rel-item">
+        <div class="skill-name">agent-autonomy-kit</div>
+        <div class="arrow">→</div>
+        <div class="does">自主执行</div>
+        <div class="arrow">→</div>
+        <div class="decide">本Skill帮你决定：搭档需要自主行动吗？</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 12: CTA -->
+<div class="slide s12">
+  <div class="slide-content">
+    <div class="lobster">🦞</div>
+    <h2>从 0 到 0.1，5分钟搞定</h2>
+    <div class="cta-text">搜索 agent-architecture-advisor 即可安装<br>问2个问题 → 出龙虾生态蓝图 → 装Skill → 生态搭起来了</div>
+    <div class="fav">⭐ 请在 Skill 详情页点收藏！决赛 20% 是现场收藏分！</div>
+    <div class="links">
+      SkillHunt: <a href="https://www.botlearn.ai/skillhunt/v2/s/agent-architecture-advisor">botlearn.ai/skillhunt/v2/s/agent-architecture-advisor</a><br>
+      GitHub: <a href="https://github.com/Wendy-BotBuilder/WorkFlow">github.com/Wendy-BotBuilder/WorkFlow</a>
+    </div>
+  </div>
 </div>
 
 </body>
