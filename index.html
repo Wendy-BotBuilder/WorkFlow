@@ -4,259 +4,244 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🦞 龙虾伙伴 — Agent Architecture Advisor</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
-:root {
-  --orange: #FF6B35;
-  --gold: #FFB347;
-  --dark: #0D0D0D;
-  --card: #1A1A1A;
-  --text: #E8E8E8;
-  --muted: #888;
-  --glow: rgba(255,107,53,0.4);
-}
+:root{--bg:#fafafa;--surface:#fff;--text:#111;--text2:#555;--text3:#999;--orange:#FF6B35;--orange2:#E85A28;--gold:#FFB347;--border:#e8e8e8;--shadow:0 1px 3px rgba(0,0,0,0.06)}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Noto Sans SC',system-ui,sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden}
+body{font-family:'Inter','Noto Sans SC',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
 
-/* === HERO === */
-.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 40px;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 50% 50%,rgba(255,107,53,0.15) 0%,transparent 70%);animation:heroGlow 8s ease-in-out infinite}
-.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--orange),transparent)}
-.lobster-hero{font-size:8em;line-height:1;margin-bottom:24px;filter:drop-shadow(0 0 40px var(--glow));animation:lobsterFloat 4s ease-in-out infinite}
-.hero h1{font-size:clamp(2.4em,5vw,4em);font-weight:900;color:var(--gold);letter-spacing:-1px;margin-bottom:16px}
-.hero .tagline{font-size:clamp(1em,2vw,1.5em);font-weight:600;color:var(--orange);margin-bottom:32px}
-.hero .desc{font-size:1.1em;color:var(--muted);max-width:600px;line-height:1.7}
-.hero .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,107,53,0.2);border:1px solid var(--orange);padding:8px 20px;border-radius:100px;font-size:0.9em;color:var(--gold);margin-top:24px}
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;z-index:100}
+.nav .logo{font-weight:800;font-size:1.1em;display:flex;align-items:center;gap:6px}
+.nav .logo .emoji{font-size:1.3em}
+.nav .links{display:flex;gap:24px;font-size:0.9em;color:var(--text2)}
+.nav .links a{color:var(--text2);text-decoration:none;font-weight:500}
+.nav .links a:hover{color:var(--orange)}
 
-@keyframes heroGlow{0%,100%{opacity:.6}50%{opacity:1}}
-@keyframes lobsterFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+/* HERO */
+.hero{padding:120px 40px 80px;text-align:center;max-width:800px;margin:0 auto}
+.hero .emoji{font-size:5em;margin-bottom:24px}
+.hero h1{font-size:clamp(2.5em,5vw,3.8em);font-weight:900;letter-spacing:-1px;margin-bottom:12px}
+.hero h1 span{color:var(--orange)}
+.hero .tagline{font-size:clamp(1.1em,2vw,1.4em);color:var(--text2);font-weight:400;margin-bottom:40px;max-width:520px}
+.hero .btn-row{display:flex;gap:12px;justify-content:center}
+.btn{display:inline-flex;align-items:center;padding:12px 28px;border-radius:10px;font-size:1em;font-weight:600;text-decoration:none;transition:all .2s}
+.btn-primary{background:var(--orange);color:#fff;border:none}
+.btn-primary:hover{background:var(--orange2)}
+.btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{border-color:var(--orange);color:var(--orange)}
 
-/* === SECTION === */
-.section{max-width:1000px;margin:0 auto;padding:80px 40px}
-.section-title{font-size:clamp(1.6em,3vw,2.4em);font-weight:900;margin-bottom:40px;display:flex;align-items:center;gap:12px}
-.section-title .num{font-size:0.5em;font-weight:400;color:var(--muted);letter-spacing:2px}
-.accent-orange{color:var(--orange)}
-.accent-gold{color:var(--gold)}
+/* FEATURE GRID */
+.features{max-width:1080px;margin:0 auto;padding:40px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.feat{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;transition:transform .2s,box-shadow .2s}
+.feat:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(255,107,53,0.12)}
+.feat .icon{font-size:1.6em;margin-bottom:12px}
+.feat .title{font-size:1.05em;font-weight:700;color:var(--text)}
+.feat .desc{font-size:0.85em;color:var(--text2);margin-top:8px;line-height:1.5}
 
-/* === PAIN POINTS === */
-.pain-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
-.pain{background:var(--card);border-radius:20px;padding:28px;position:relative;overflow:hidden}
-.pain::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--orange)}
-.pain .icon{font-size:1.6em;margin-bottom:8px}
-.pain .title{font-size:1.15em;font-weight:700;color:var(--gold)}
-.pain .desc{font-size:0.95em;color:var(--muted);margin-top:8px;line-height:1.5}
+/* SECTION */
+.section{max-width:800px;margin:0 auto;padding:80px 40px}
+.section-label{font-size:0.7em;font-weight:600;color:var(--orange);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px}
+.section-title{font-size:clamp(1.5em,3vw,2.2em);font-weight:800;margin-bottom:40px;line-height:1.3}
 
-/* === QUESTIONS === */
-.q-card{background:var(--card);border-radius:24px;padding:36px;margin:20px 0;position:relative}
-.q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:24px 24px 0 0;background:var(--orange)}
-.q-num{font-size:0.75em;font-weight:600;color:var(--orange);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px}
-.q-text{font-size:1.5em;font-weight:700;color:var(--text);line-height:1.4}
-.q-sub{font-size:0.95em;color:var(--muted);margin-top:14px;line-height:1.6}
-.q-card.core{border:3px solid var(--orange);background:rgba(255,107,53,0.08)}
-.q-card.core::before{height:4px;background:var(--gold)}
-.q-card.core .q-text{color:var(--gold);font-size:1.7em}
-.star-badge{display:inline-flex;align-items:center;background:var(--orange);color:#fff;padding:4px 12px;border-radius:100px;font-size:0.8em;font-weight:600;margin-left:12px;vertical-align:middle}
+/* QUESTIONS */
+.q-block{padding:32px;border-radius:20px;margin:16px 0;background:var(--surface);border:1px solid var(--border)}
+.q-block .q-num{font-size:0.7em;font-weight:600;color:var(--orange);letter-spacing:2px;margin-bottom:12px}
+.q-block .q-text{font-size:1.4em;font-weight:700}
+.q-block .q-sub{font-size:0.9em;color:var(--text2);margin-top:12px}
+.q-block.highlight{border:2px solid var(--orange);background:linear-gradient(135deg,#fff5eb,#fff)}
+.q-block.highlight .q-text{color:var(--orange2)}
 
-/* === PARTNER TYPES === */
-.partner-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
-.partner{background:var(--card);border-radius:20px;padding:28px;text-align:center;transition:transform 0.3s,box-shadow 0.3s}
-.partner:hover{transform:translateY(-6px);box-shadow:0 8px 30px rgba(255,107,53,0.2)}
-.partner .emoji{font-size:3em;margin-bottom:8px}
-.partner .name{font-size:1.2em;font-weight:700;color:var(--gold)}
-.partner .desc{font-size:0.9em;color:var(--muted);margin-top:8px;line-height:1.5}
-.partner .arch-tag{display:inline-block;background:rgba(255,107,53,0.2);color:var(--orange);padding:6px 16px;border-radius:100px;font-size:0.8em;font-weight:600;margin-top:12px}
+/* PARTNER CARDS */
+.partner-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.partner-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;display:flex;align-items:flex-start;gap:16px}
+.partner-card .emoji{font-size:2em;flex-shrink:0}
+.partner-card .content .name{font-size:1.1em;font-weight:700}
+.partner-card .content .desc{font-size:0.85em;color:var(--text2);margin-top:4px}
+.partner-card .content .tag{display:inline-block;background:rgba(255,107,53,0.1);color:var(--orange);padding:3px 10px;border-radius:6px;font-size:0.75em;font-weight:600;margin-top:8px}
 
-/* === 6 PATTERNS === */
-.patterns{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.pattern{background:var(--card);border-radius:16px;padding:24px;text-align:center;transition:transform 0.3s}
-.pattern:hover{transform:scale(1.04)}
-.pattern .emoji{font-size:2.8em;margin-bottom:10px}
-.pattern .name{font-size:1.15em;font-weight:700;color:var(--text)}
-.pattern .one{font-size:0.9em;color:var(--gold);margin-top:6px}
-.pattern .suit{font-size:0.8em;color:var(--muted);margin-top:6px}
+/* PATTERNS */
+.patterns{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.pattern-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;text-align:center;transition:all .2s}
+.pattern-card:hover{border-color:var(--orange);transform:translateY(-2px)}
+.pattern-card .emoji{font-size:2.2em}
+.pattern-card .name{font-size:1em;font-weight:700;margin-top:8px}
+.pattern-card .one{font-size:0.85em;color:var(--gold);margin-top:4px}
+.pattern-card .suit{font-size:0.75em;color:var(--text3);margin-top:4px}
 
-/* === SELF-AWARENESS === */
-.warn-card{background:rgba(255,179,71,0.06);border:2px solid var(--gold);border-radius:24px;padding:48px;text-align:center;max-width:700px;margin:0 auto}
-.warn-card .emoji{font-size:3em;margin-bottom:16px}
-.warn-card .text{font-size:1.4em;font-weight:700;color:var(--gold);line-height:1.5}
-.warn-card .sub{font-size:1em;color:var(--muted);margin-top:16px;line-height:1.6}
+/* WARN */
+.warn-block{background:linear-gradient(135deg,#fff8e7,#fff3e6);border:1px solid var(--gold);border-radius:20px;padding:40px;text-align:center;margin:0 auto}
+.warn-block .emoji{font-size:2.4em;margin-bottom:12px}
+.warn-block .text{font-size:1.25em;font-weight:700;color:var(--text)}
+.warn-block .sub{font-size:0.95em;color:var(--text2);margin-top:12px}
 
-/* === QUANTIFICATION === */
-.quant-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-.quant{background:var(--card);border-radius:16px;padding:24px}
-.quant .dim{font-size:1.05em;font-weight:600;color:var(--gold)}
-.quant .std{font-size:0.9em;color:var(--muted);margin-top:10px;line-height:1.5}
-.quant-note{text-align:center;font-size:1.15em;font-weight:600;color:var(--orange);margin-top:32px;padding:16px;background:rgba(255,107,53,0.1);border-radius:16px}
+/* QUANT */
+.quant-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.quant-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px}
+.quant-card .dim{font-size:1em;font-weight:700;color:var(--orange2)}
+.quant-card .std{font-size:0.85em;color:var(--text2);margin-top:8px;line-height:1.5}
+.quant-note{background:rgba(255,107,53,0.06);border:1px solid rgba(255,107,53,0.2);border-radius:12px;padding:16px;text-align:center;font-weight:600;color:var(--orange2);margin-top:20px}
 
-/* === BLUEPRINT === */
-.blueprint{background:var(--card);border:2px solid var(--orange);border-radius:24px;padding:36px}
-.blueprint .rec{font-size:1.6em;font-weight:900;color:var(--orange)}
-.blueprint .alt{font-size:1.1em;color:var(--muted);margin-top:8px}
-.blueprint .why{font-size:1em;color:var(--text);margin-top:20px;padding:16px;background:rgba(255,107,53,0.08);border-radius:12px;line-height:1.6}
-.bp-table{width:100%;margin-top:24px;border-collapse:separate;border-spacing:0}
-.bp-table th{background:var(--orange);color:#fff;padding:14px;font-size:0.9em;font-weight:600}
-.bp-table th:first-child{border-radius:12px 0 0 0}
-.bp-table th:last-child{border-radius:0 12px 0 0}
-.bp-table td{padding:14px;border-bottom:1px solid #2a2a2a;font-size:0.9em;color:var(--muted)}
-.bp-table tr:last-child td{border-bottom:none}
-.bp-table tr:last-child td:first-child{border-radius:0 0 0 12px}
-.bp-table tr:last-child td:last-child{border-radius:0 0 12px 0}
-.arch-diagram{margin-top:24px;text-align:center;padding:20px;background:rgba(255,179,71,0.08);border-radius:16px;font-size:1.3em;font-weight:600;color:var(--gold)}
+/* BLUEPRINT */
+.blueprint-box{background:var(--surface);border:2px solid var(--orange);border-radius:20px;padding:36px}
+.blueprint-box .rec{font-size:1.5em;font-weight:900;color:var(--orange2)}
+.blueprint-box .alt{font-size:1em;color:var(--text2);margin-top:6px}
+.blueprint-box .why{font-size:0.95em;color:var(--text);margin-top:20px;padding:14px;background:rgba(255,107,53,0.06);border-radius:10px;line-height:1.6}
+.bp-table{width:100%;margin-top:24px;border-collapse:collapse}
+.bp-table th{background:var(--orange);color:#fff;padding:12px;font-weight:600;font-size:0.85em}
+.bp-table td{padding:12px;font-size:0.85em;color:var(--text2);border-bottom:1px solid var(--border)}
+.bp-table td:first-child{color:var(--text);font-weight:500}
+.arch-diagram{background:rgba(255,179,71,0.08);border-radius:12px;padding:18px;text-align:center;font-size:1.2em;font-weight:600;color:var(--orange2);margin-top:20px}
 
-/* === ECOSYSTEM TABLE === */
-.eco-table{width:100%;border-collapse:separate;border-spacing:0;margin-top:20px}
-.eco-table th{background:rgba(255,107,53,0.3);color:var(--gold);padding:14px;font-size:0.85em;font-weight:600;text-align:left}
-.eco-table th:first-child{border-radius:12px 0 0 0}
-.eco-table th:last-child{border-radius:0 12px 0 0}
-.eco-table td{padding:14px;border-bottom:1px solid #2a2a2a;font-size:0.9em}
-.eco-table a{color:var(--orange);text-decoration:none;font-weight:500}
+/* ECOSYSTEM */
+.eco-section{background:var(--surface);border-radius:20px;padding:32px;border:1px solid var(--border)}
+.eco-table{width:100%;border-collapse:collapse}
+.eco-table th{background:rgba(255,107,53,0.1);color:var(--orange2);padding:14px;font-weight:600;font-size:0.85em;text-align:left}
+.eco-table td{padding:14px;font-size:0.85em;border-bottom:1px solid var(--border)}
+.eco-table a{color:var(--orange);font-weight:500;text-decoration:none}
 .eco-table a:hover{text-decoration:underline}
-.eco-table .author{color:var(--muted)}
-.eco-table .stats{color:#666;font-size:0.8em}
-.eco-closing{text-align:center;font-size:1.3em;font-weight:700;color:var(--gold);margin-top:32px}
+.eco-table .muted{color:var(--text3)}
+.eco-closing{text-align:center;font-size:1.2em;font-weight:700;color:var(--orange2);margin-top:24px}
 
-/* === 8 CASES === */
-.cases{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.case{background:var(--card);border-radius:14px;padding:20px;text-align:center;transition:transform 0.3s}
-.case:hover{transform:translateY(-4px)}
-.case .emoji{font-size:2.4em;margin-bottom:6px}
-.case .name{font-size:0.95em;font-weight:600;color:var(--text)}
-.case .arch{font-size:0.8em;color:var(--orange);margin-top:6px}
+/* CASES */
+.cases-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.case-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;transition:all .2s}
+.case-card:hover{border-color:var(--orange)}
+.case-card .emoji{font-size:2em}
+.case-card .name{font-size:0.9em;font-weight:600;margin-top:4px}
+.case-card .arch{font-size:0.75em;color:var(--orange);margin-top:4px}
 
-/* === PARTNER REL === */
-.rels{display:flex;flex-direction:column;gap:14px}
-.rel{background:var(--card);border-radius:14px;padding:20px;display:flex;align-items:center;gap:16px}
-.rel .skill-name{font-size:1em;font-weight:600;color:var(--gold);white-space:nowrap}
-.rel .arrow{color:var(--orange);font-size:1.2em}
-.rel .does{font-size:0.9em;color:var(--muted)}
-.rel .decide{font-size:0.9em;color:var(--orange);font-weight:500}
+/* REL */
+.rel-list{display:flex;flex-direction:column;gap:10px}
+.rel-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;display:flex;align-items:center;gap:12px;font-size:0.9em}
+.rel-item .sname{font-weight:600;color:var(--orange)}
+.rel-item .arrow{color:var(--gold)}
+.rel-item .does{color:var(--text2)}
+.rel-item .decide{color:var(--orange2);font-weight:500}
 
-/* === CTA === */
-.cta-section{position:relative;min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 40px;overflow:hidden}
-.cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(255,107,53,0.3) 0%,rgba(255,179,71,0.1) 40%,transparent 70%)}
-.cta-section .lobster{font-size:6em;margin-bottom:24px;filter:drop-shadow(0 0 30px var(--glow))}
-.cta-section h2{font-size:clamp(1.8em,3vw,2.8em);font-weight:900;color:#fff;margin-bottom:16px}
-.cta-section .cta-text{font-size:1.15em;color:rgba(255,255,255,0.85);max-width:600px;line-height:1.7;margin-bottom:32px}
-.cta-section .fav{font-size:1.4em;font-weight:700;color:#fff;background:rgba(0,0,0,0.35);padding:16px 32px;border-radius:100px;display:inline-block;margin-bottom:24px}
-.cta-section .links{font-size:1em;color:rgba(255,255,255,0.7)}
-.cta-section .links a{color:#fff;font-weight:500}
-.cta-section .credit{font-size:0.85em;color:rgba(255,255,255,0.5);margin-top:40px}
+/* FOOTER */
+.footer{text-align:center;padding:80px 40px 40px}
+.footer .emoji{font-size:3em;margin-bottom:16px}
+.footer h3{font-size:1.8em;font-weight:800;color:var(--orange2);margin-bottom:8px}
+.footer .desc{color:var(--text2);max-width:500px;margin:0 auto 24px}
+.footer .fav{background:var(--orange);color:#fff;padding:14px 32px;border-radius:10px;font-weight:700;font-size:1.1em;display:inline-block}
+.footer .links{margin-top:16px;font-size:0.9em;color:var(--text3)}
+.footer .links a{color:var(--orange);font-weight:500}
+.footer .credit{font-size:0.8em;color:var(--text3);margin-top:32px}
 
-/* === DIVIDER === */
-.divider{height:1px;background:linear-gradient(90deg,transparent,var(--orange),transparent);margin:0 auto;max-width:200px}
-
-/* === RESPONSIVE === */
+/* RESPONSIVE */
 @media(max-width:768px){
-  .pain-grid,.partner-grid,.quant-grid{grid-template-columns:1fr}
-  .patterns{grid-template-columns:repeat(2,1fr)}
-  .cases{grid-template-columns:repeat(2,1fr)}
-  .section{padding:60px 20px}
-  .hero{padding:60px 20px}
+  .features,.patterns,.quant-grid,.partner-grid{grid-template-columns:1fr 1fr}
+  .cases-grid{grid-template-columns:1fr 1fr}
+  .nav .links{display:none}
+}
+@media(max-width:480px){
+  .features,.patterns,.cases-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
+<nav>
+  <div class="logo"><span class="emoji">🦞</span> 龙虾伙伴</div>
+  <div class="links">
+    <a href="#questions">核心问题</a>
+    <a href="#patterns">生态模式</a>
+    <a href="#blueprint">蓝图输出</a>
+    <a href="#ecosystem">搭档速查</a>
+    <a href="https://www.botlearn.ai/skillhunt/v2/s/agent-architecture-advisor">安装</a>
+  </div>
+</nav>
+
 <!-- HERO -->
 <div class="hero">
-  <div class="lobster-hero">🦞</div>
-  <h1>龙虾伙伴</h1>
-  <div class="tagline">从 0 到 0.1 的 Agent 生态设计</div>
-  <div class="desc">第一次做 Agent？不知道从哪开始？<br>我是你的龙虾伙伴，像朋友一样帮你从迷茫走到清晰。</div>
-  <div class="badge">✨ 5分钟出蓝图 · 数据驱动不拍脑袋</div>
-</div>
-
-<div class="divider"></div>
-
-<!-- PAIN POINTS -->
-<div class="section">
-  <div class="section-title accent-orange"><span class="num">01</span> 🤯 小白的痛点</div>
-  <div class="pain-grid">
-    <div class="pain"><div class="icon">❓</div><div class="title">到底用单体还是多Agent？</div><div class="desc">选错架构 → 后期重构成本翻倍</div></div>
-    <div class="pain"><div class="icon">🤷</div><div class="title">每个Agent该干什么？</div><div class="desc">分工不清晰 → 互相打架效率低</div></div>
-    <div class="pain"><div class="icon">📚</div><div class="title">8维度×6架构矩阵太复杂</div><div class="desc">小白根本无从下手，全是主观判断</div></div>
-    <div class="pain"><div class="icon">⏰</div><div class="title">调研1-2天还没结论</div><div class="desc">团队争论2小时也没数据支撑</div></div>
+  <div class="emoji">🦞</div>
+  <h1>龙虾伙伴<br><span>从 0 到 0.1</span></h1>
+  <div class="tagline">第一次做 Agent？不知道从哪开始？<br>我是你的龙虾伙伴，5分钟帮你从迷茫走到清晰。</div>
+  <div class="btn-row">
+    <a class="btn btn-primary" href="https://www.botlearn.ai/skillhunt/v2/s/agent-architecture-advisor">🦞 前往 SkillHunt 安装</a>
+    <a class="btn btn-secondary" href="https://github.com/Wendy-BotBuilder/WorkFlow">GitHub 仓库</a>
   </div>
 </div>
 
-<div class="divider"></div>
+<!-- 3 FEATURES -->
+<div class="features">
+  <div class="feat"><div class="icon">🤝</div><div class="title">伙伴对话，不是甩问卷</div><div class="desc">2个核心问题帮你理清需求，像朋友一样聊，不是冷冰冰8维度问卷</div></div>
+  <div class="feat"><div class="icon">📊</div><div class="title">数据驱动，不拍脑袋</div><div class="desc">8维度×6架构评分矩阵，量化标准覆盖，得分最高=主推荐</div></div>
+  <div class="feat"><div class="icon">🦞</div><div class="title">从蓝图到搭生态</div><div class="desc">输出分工表+SkillHunt Skill清单，装完搭档团队就到位了</div></div>
+</div>
 
-<!-- TWO QUESTIONS -->
-<div class="section">
-  <div class="section-title accent-gold"><span class="num">02</span> 🤝 两个核心问题</div>
-  <div class="q-card">
+<!-- QUESTIONS -->
+<div class="section" id="questions">
+  <div class="section-label">核心逻辑</div>
+  <div class="section-title">两个核心问题</div>
+  <div class="q-block">
     <div class="q-num">问题 1</div>
     <div class="q-text">你想让你的龙虾做什么？</div>
-    <div class="q-sub">做一件事 → 一只龙虾就够了 · 做一系列事 → 需要龙虾生态 · 不同领域 → 需要专业分工</div>
+    <div class="q-sub">做一件事 → 一只龙虾 · 做一系列事 → 生态 · 不同领域 → 专业分工</div>
   </div>
-  <div class="q-card core">
+  <div class="q-block highlight">
     <div class="q-num">⭐ 问题 2 — 核心</div>
-    <div class="q-text">你想拥有什么样的合作伙伴？<span class="star-badge">🦞 关键问题</span></div>
+    <div class="q-text">你想拥有什么样的合作伙伴？</div>
     <div class="q-sub">不是选架构模式，是选合作伙伴——这才是从 0 到 0.1 的关键</div>
   </div>
 </div>
 
-<div class="divider"></div>
-
 <!-- PARTNER TYPES -->
 <div class="section">
-  <div class="section-title accent-orange"><span class="num">03</span> 🦞 4种搭档类型</div>
+  <div class="section-label">搭档类型</div>
+  <div class="section-title">你想找什么样的搭档？</div>
   <div class="partner-grid">
-    <div class="partner"><div class="emoji">🦞</div><div class="name">全能型搭档</div><div class="desc">简单任务、单一领域<br>"查数据+画图表"</div><div class="arch-tag">→ 单体模式</div></div>
-    <div class="partner"><div class="emoji">🤝</div><div class="name">专业型搭档</div><div class="desc">不同领域各擅一门<br>数据+设计+安全搭档</div><div class="arch-tag">→ 编排模式</div></div>
-    <div class="partner"><div class="emoji">📋</div><div class="name">审批型搭档</div><div class="desc">做错后果严重<br>执行→审批→才交付</div><div class="arch-tag">→ 层级模式</div></div>
-    <div class="partner"><div class="emoji">🌀</div><div class="name">探索型搭档</div><div class="desc">可试错、追求创意<br>各自探索→汇总最佳</div><div class="arch-tag">→ 黑板/去中心化</div></div>
+    <div class="partner-card"><div class="emoji">🦞</div><div class="content"><div class="name">全能型搭档</div><div class="desc">简单任务、单一领域<br>"查数据+画图表"</div><div class="tag">单体模式</div></div></div>
+    <div class="partner-card"><div class="emoji">🤝</div><div class="content"><div class="name">专业型搭档</div><div class="desc">不同领域各擅一门<br>数据+设计+安全搭档</div><div class="tag">编排模式</div></div></div>
+    <div class="partner-card"><div class="emoji">📋</div><div class="content"><div class="name">审批型搭档</div><div class="desc">做错后果严重<br>执行→审批→才交付</div><div class="tag">层级模式</div></div></div>
+    <div class="partner-card"><div class="emoji">🌀</div><div class="content"><div class="name">探索型搭档</div><div class="desc">可试错、追求创意<br>各自探索→汇总最佳</div><div class="tag">黑板/去中心化</div></div></div>
   </div>
 </div>
-
-<div class="divider"></div>
 
 <!-- 6 PATTERNS -->
-<div class="section">
-  <div class="section-title accent-gold"><span class="num">04</span> 🦞 6种龙虾生态模式</div>
+<div class="section" id="patterns">
+  <div class="section-label">生态模式</div>
+  <div class="section-title">🦞 6种龙虾生态模式</div>
   <div class="patterns">
-    <div class="pattern"><div class="emoji">🦞</div><div class="name">单体</div><div class="one">1 Agent + 多 Tools</div><div class="suit">简单任务 · 单一领域</div></div>
-    <div class="pattern"><div class="emoji">🔗</div><div class="name">流水线</div><div class="one">固定顺序串联</div><div class="suit">有固定步骤的任务</div></div>
-    <div class="pattern"><div class="emoji">🤖</div><div class="name">编排/指挥官</div><div class="one">指挥官→分发→汇总</div><div class="suit">动态路由不同搭档</div></div>
-    <div class="pattern"><div class="emoji">📋</div><div class="name">层级式</div><div class="one">审批→执行→复核</div><div class="suit">错误后果严重</div></div>
-    <div class="pattern"><div class="emoji">📝</div><div class="name">黑板式</div><div class="one">共享黑板自主协作</div><div class="suit">互相参考彼此发现</div></div>
-    <div class="pattern"><div class="emoji">🌀</div><div class="name">去中心化</div><div class="one">平等对话协商</div><div class="suit">可试错 · 追求创意</div></div>
+    <div class="pattern-card"><div class="emoji">🦞</div><div class="name">单体</div><div class="one">1 Agent + 多 Tools</div><div class="suit">简单任务 · 单一领域</div></div>
+    <div class="pattern-card"><div class="emoji">🔗</div><div class="name">流水线</div><div class="one">固定顺序串联</div><div class="suit">有固定步骤的任务</div></div>
+    <div class="pattern-card"><div class="emoji">🤖</div><div class="name">编排/指挥官</div><div class="one">指挥官→分发→汇总</div><div class="suit">动态路由不同搭档</div></div>
+    <div class="pattern-card"><div class="emoji">📋</div><div class="name">层级式</div><div class="one">审批→执行→复核</div><div class="suit">错误后果严重</div></div>
+    <div class="pattern-card"><div class="emoji">📝</div><div class="name">黑板式</div><div class="one">共享黑板自主协作</div><div class="suit">互相参考彼此发现</div></div>
+    <div class="pattern-card"><div class="emoji">🌀</div><div class="name">去中心化</div><div class="one">平等对话协商</div><div class="suit">可试错 · 追求创意</div></div>
   </div>
 </div>
-
-<div class="divider"></div>
 
 <!-- SELF-AWARENESS -->
 <div class="section">
-  <div class="section-title accent-gold"><span class="num">05</span> ⚠️ 自省机制</div>
-  <div class="warn-card">
+  <div class="section-label">自省</div>
+  <div class="section-title">⚠️ 什么时候一只龙虾就够了？</div>
+  <div class="warn-block">
     <div class="emoji">🦞</div>
-    <div class="text">1个Prompt + 几个Tools就能搞定<br>别建生态，养一只龙虾就够了</div>
-    <div class="sub">如果评估后所有维度都指向单体，我会主动告诉你：<br>「省下建生态的复杂度，直接干活。」</div>
+    <div class="text">1个Prompt + 几个Tools就能搞定 → 别建生态，养一只龙虾就够了</div>
+    <div class="sub">如果评估后所有维度都指向单体，我会主动告诉你：「省下建生态的复杂度，直接干活。」</div>
   </div>
 </div>
 
-<div class="divider"></div>
-
 <!-- QUANTIFICATION -->
 <div class="section">
-  <div class="section-title accent-orange"><span class="num">06</span> 📊 维度量化标准</div>
+  <div class="section-label">量化</div>
+  <div class="section-title">📊 维度量化标准——不用主观猜</div>
   <div class="quant-grid">
-    <div class="quant"><div class="dim">Q1: 任务复杂度</div><div class="std">1-2步无分支 = 低 · 3-5步固定顺序 = 中 · 多分支迭代 = 高</div></div>
-    <div class="quant"><div class="dim">Q2: 错误容忍度</div><div class="std">影响决策/合规 = 低 · 错了可修正 = 中 · 可试错 = 高</div></div>
-    <div class="quant"><div class="dim">Q3: 领域专业度</div><div class="std">1个领域 = 单一 · 2-3个 = 多样 · 交叉参考 = 多领域</div></div>
-    <div class="quant"><div class="dim">5个补充维度</div><div class="std">耦合度 · 确定性 · 审批介入 · 实时性 · 扩展性 —— 每个都有具体判断标准</div></div>
+    <div class="quant-card"><div class="dim">Q1: 任务复杂度</div><div class="std">1-2步无分支=低 · 3-5步固定顺序=中 · 多分支迭代=高</div></div>
+    <div class="quant-card"><div class="dim">Q2: 错误容忍度</div><div class="std">影响决策/合规=低 · 错了可修正=中 · 可试错=高</div></div>
+    <div class="quant-card"><div class="dim">Q3: 领域专业度</div><div class="std">1个领域=单一 · 2-3个=多样 · 交叉参考=多领域</div></div>
+    <div class="quant-card"><div class="dim">5个补充维度</div><div class="std">耦合度 · 确定性 · 审批 · 实时性 · 扩展性——每个都有具体标准</div></div>
   </div>
   <div class="quant-note">8维度×6架构评分矩阵 → 数据驱动，不拍脑袋 🦞</div>
 </div>
 
-<div class="divider"></div>
-
 <!-- BLUEPRINT -->
-<div class="section">
-  <div class="section-title accent-orange"><span class="num">07</span> 🦞 输出：龙虾生态蓝图</div>
-  <div class="blueprint">
+<div class="section" id="blueprint">
+  <div class="section-label">输出</div>
+  <div class="section-title">🦞 你的龙虾生态蓝图</div>
+  <div class="blueprint-box">
     <div class="rec">主推荐：编排/指挥官式（得分 34/40）</div>
     <div class="alt">可选替代：层级式（30/40，差距&lt;3）</div>
     <div class="why">💡 你的数据分析有5步SOP但不同平台需走不同路径，指挥官做路由+汇总，专业搭档各自专精。</div>
@@ -264,77 +249,74 @@ body{font-family:'Noto Sans SC',system-ui,sans-serif;background:var(--dark);colo
       <tr><th>搭档</th><th>负责什么</th><th>输入</th><th>输出</th><th>Tools</th></tr>
       <tr><td>🤖 指挥官</td><td>接收指令、路由、汇总</td><td>用户需求</td><td>最终报告</td><td>cron · memory</td></tr>
       <tr><td>📊 数据搭档</td><td>取数+指标计算</td><td>查询参数</td><td>数据结果</td><td>SQL · DB</td></tr>
-      <tr><td>🎨 设计搭档</td><td>报告/卡片生成</td><td>数据结果</td><td>可视化报告</td><td>PPT · Feishu</td></tr>
-      <tr><td>📚 学习搭档</td><td>行业洞察+调研</td><td>主题关键词</td><td>知识笔记</td><td>web_fetch</td></tr>
+      <tr><td>🎨 设计搭档</td><td>报告/卡片生成</td><td>数据结果</td><td>可视化</td><td>PPT · Feishu</td></tr>
+      <tr><td>📚 学习搭档</td><td>行业洞察+调研</td><td>关键词</td><td>知识笔记</td><td>web_fetch</td></tr>
     </table>
     <div class="arch-diagram">用户 → 🤖 指挥官 → 📊 数据搭档 · 📚 学习搭档 · 🎨 设计搭档</div>
   </div>
 </div>
 
-<div class="divider"></div>
-
-<!-- ECOSYSTEM TABLE -->
-<div class="section">
-  <div class="section-title accent-gold"><span class="num">08</span> 🦞 SkillHunt 搭档速查表</div>
-  <table class="eco-table">
-    <tr><th>搭档角色</th><th>推荐 Skill</th><th>作者</th><th>数据</th></tr>
-    <tr><td>🧠 记忆搭档</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/triple-memory">triple-memory</a></td><td class="author">ktpriyatham</td><td class="stats">92 installs · ⭐3.91</td></tr>
-    <tr><td>⚡ 自主搭档</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/agent-autonomy-kit">agent-autonomy-kit</a></td><td class="author">ryancampbell</td><td class="stats">31 installs · ⭐3.60</td></tr>
-    <tr><td>📱 社媒搭档</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/social-media-agent">social-media-agent</a></td><td class="author">psmamm</td><td class="stats">50 installs · ⭐4.13</td></tr>
-    <tr><td>📊 数据搭档</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/data-analysis">data-analysis</a></td><td class="author">ivangdavila</td><td class="stats">11 installs · ⭐3.83</td></tr>
-    <tr><td>🔒 安全搭档</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/sickn33.find-bugs">find-bugs</a></td><td class="author">sickn33</td><td class="stats">57 installs · ⭐4.00</td></tr>
-    <tr><td>📅 会议搭档</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/meeting-prep">meeting-prep</a></td><td class="author">audsmith28</td><td class="stats">19 installs · ⭐3.83</td></tr>
-    <tr><td>🔬 研究搭档</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/academic-deep-research">deep-research</a></td><td class="author">kesslerio</td><td class="stats">40 installs · ⭐3.75</td></tr>
-    <tr><td>✍️ 内容搭档</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/anthropics.doc-coauthoring">doc-coauthoring</a></td><td class="author">anthropics</td><td class="stats">42 installs · ⭐4.00</td></tr>
-    <tr><td>🔄 自进化搭档</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/self-improving-agent">self-improving</a></td><td class="author">peterskoett</td><td class="stats">71 installs · ⭐3.17</td></tr>
-  </table>
-  <div class="eco-closing">装完这些 Skill，搭档团队就到位了。从 0 到 0.1，就这么简单 🦞</div>
+<!-- ECOSYSTEM -->
+<div class="section" id="ecosystem">
+  <div class="section-label">搭档速查</div>
+  <div class="section-title">🦞 SkillHunt 搭档速查表</div>
+  <div class="eco-section">
+    <table class="eco-table">
+      <tr><th>搭档角色</th><th>推荐 Skill</th><th>作者</th><th>数据</th></tr>
+      <tr><td>🧠 记忆</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/triple-memory">triple-memory</a></td><td class="muted">ktpriyatham</td><td class="muted">92 · ⭐3.91</td></tr>
+      <tr><td>⚡ 自主</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/agent-autonomy-kit">agent-autonomy-kit</a></td><td class="muted">ryancampbell</td><td class="muted">31 · ⭐3.60</td></tr>
+      <tr><td>📱 社媒</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/social-media-agent">social-media-agent</a></td><td class="muted">psmamm</td><td class="muted">50 · ⭐4.13</td></tr>
+      <tr><td>📊 数据</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/data-analysis">data-analysis</a></td><td class="muted">ivangdavila</td><td class="muted">11 · ⭐3.83</td></tr>
+      <tr><td>🔒 安全</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/sickn33.find-bugs">find-bugs</a></td><td class="muted">sickn33</td><td class="muted">57 · ⭐4.00</td></tr>
+      <tr><td>📅 会议</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/meeting-prep">meeting-prep</a></td><td class="muted">audsmith28</td><td class="muted">19 · ⭐3.83</td></tr>
+      <tr><td>🔬 研究</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/academic-deep-research">deep-research</a></td><td class="muted">kesslerio</td><td class="muted">40 · ⭐3.75</td></tr>
+      <tr><td>✍️ 内容</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/anthropics.doc-coauthoring">doc-coauthoring</a></td><td class="muted">anthropics</td><td class="muted">42 · ⭐4.00</td></tr>
+      <tr><td>🔄 自进化</td><td><a href="https://www.botlearn.ai/skillhunt/v2/s/self-improving-agent">self-improving</a></td><td class="muted">peterskoett</td><td class="muted">71 · ⭐3.17</td></tr>
+    </table>
+    <div class="eco-closing">装完这些 Skill，搭档团队就到位了。从 0 到 0.1，就这么简单 🦞</div>
+  </div>
 </div>
-
-<div class="divider"></div>
 
 <!-- 8 CASES -->
 <div class="section">
-  <div class="section-title accent-orange"><span class="num">09</span> 🦞 8个真实生态案例</div>
-  <div class="cases">
-    <div class="case"><div class="emoji">📊</div><div class="name">数据分析生态</div><div class="arch">编排式 34/40</div></div>
-    <div class="case"><div class="emoji">💬</div><div class="name">客服龙虾</div><div class="arch">单体 20+/40</div></div>
-    <div class="case"><div class="emoji">💰</div><div class="name">金融交易龙虾</div><div class="arch">层级式 30+/40</div></div>
-    <div class="case"><div class="emoji">✍️</div><div class="name">内容创作生态</div><div class="arch">流水线 28+/40</div></div>
-    <div class="case"><div class="emoji">🔒</div><div class="name">安全审计生态</div><div class="arch">黑板式 27+/40</div></div>
-    <div class="case"><div class="emoji">📅</div><div class="name">会议准备龙虾</div><div class="arch">单体式</div></div>
-    <div class="case"><div class="emoji">🔬</div><div class="name">探索式研究</div><div class="arch">去中心化 23+/40</div></div>
-    <div class="case"><div class="emoji">🔄</div><div class="name">自进化龙虾</div><div class="arch">单体+学习</div></div>
+  <div class="section-label">案例</div>
+  <div class="section-title">🦞 8个真实龙虾生态案例</div>
+  <div class="cases-grid">
+    <div class="case-card"><div class="emoji">📊</div><div class="name">数据分析生态</div><div class="arch">编排 34/40</div></div>
+    <div class="case-card"><div class="emoji">💬</div><div class="name">客服龙虾</div><div class="arch">单体 20+</div></div>
+    <div class="case-card"><div class="emoji">💰</div><div class="name">金融交易龙虾</div><div class="arch">层级 30+</div></div>
+    <div class="case-card"><div class="emoji">✍️</div><div class="name">内容创作生态</div><div class="arch">流水线 28</div></div>
+    <div class="case-card"><div class="emoji">🔒</div><div class="name">安全审计生态</div><div class="arch">黑板 27</div></div>
+    <div class="case-card"><div class="emoji">📅</div><div class="name">会议准备龙虾</div><div class="arch">单体</div></div>
+    <div class="case-card"><div class="emoji">🔬</div><div class="name">探索式研究</div><div class="arch">去中心化 23</div></div>
+    <div class="case-card"><div class="emoji">🔄</div><div class="name">自进化龙虾</div><div class="arch">单体+学习</div></div>
   </div>
 </div>
-
-<div class="divider"></div>
 
 <!-- PARTNER REL -->
 <div class="section">
-  <div class="section-title accent-gold"><span class="num">10</span> 🤝 不是替代，是伙伴</div>
-  <div class="rels">
-    <div class="rel"><div class="skill-name">multi-agent-patterns</div><div class="arrow">→</div><div class="does">讲多Agent理论</div><div class="arrow">→</div><div class="decide">你是否需要深入理论？</div></div>
-    <div class="rel"><div class="skill-name">davila7.architecture</div><div class="arrow">→</div><div class="does">架构决策ADR文档</div><div class="arrow">→</div><div class="decide">你是否需要写ADR？</div></div>
-    <div class="rel"><div class="skill-name">triple-memory</div><div class="arrow">→</div><div class="does">记忆系统</div><div class="arrow">→</div><div class="decide">你的生态需要记忆搭档吗？</div></div>
-    <div class="rel"><div class="skill-name">agent-autonomy-kit</div><div class="arrow">→</div><div class="does">自主执行</div><div class="arrow">→</div><div class="decide">搭档需要自主行动吗？</div></div>
-    <div class="rel"><div class="skill-name">self-improving-agent</div><div class="arrow">→</div><div class="does">自我学习</div><div class="arrow">→</div><div class="decide">龙虾需要自我进化吗？</div></div>
+  <div class="section-label">关系</div>
+  <div class="section-title">🤝 不是替代，是伙伴</div>
+  <div class="rel-list">
+    <div class="rel-item"><span class="sname">multi-agent-patterns</span><span class="arrow">→</span><span class="does">讲多Agent理论</span><span class="arrow">→</span><span class="decide">帮你决定：是否需要深入理论？</span></div>
+    <div class="rel-item"><span class="sname">davila7.architecture</span><span class="arrow">→</span><span class="does">架构决策ADR</span><span class="arrow">→</span><span class="decide">帮你决定：是否需要写ADR？</span></div>
+    <div class="rel-item"><span class="sname">triple-memory</span><span class="arrow">→</span><span class="does">记忆系统</span><span class="arrow">→</span><span class="decide">帮你决定：生态需要记忆搭档吗？</span></div>
+    <div class="rel-item"><span class="sname">agent-autonomy-kit</span><span class="arrow">→</span><span class="does">自主执行</span><span class="arrow">→</span><span class="decide">帮你决定：搭档需要自主行动吗？</span></div>
+    <div class="rel-item"><span class="sname">self-improving-agent</span><span class="arrow">→</span><span class="does">自我学习</span><span class="arrow">→</span><span class="decide">帮你决定：龙虾需要自我进化吗？</span></div>
   </div>
 </div>
 
-<div class="divider"></div>
-
-<!-- CTA -->
-<div class="cta-section">
-  <div class="lobster">🦞</div>
-  <h2>从 0 到 0.1，5分钟搞定</h2>
-  <div class="cta-text">搜索 agent-architecture-advisor 即可安装<br>问2个问题 → 出龙虾生态蓝图 → 装 Skill → 生态搭起来了</div>
+<!-- FOOTER / CTA -->
+<div class="footer">
+  <div class="emoji">🦞</div>
+  <h3>从 0 到 0.1，5分钟搞定</h3>
+  <div class="desc">搜索 agent-architecture-advisor 即可安装<br>问2个问题 → 出龙虾生态蓝图 → 装 Skill → 生态搭起来了</div>
   <div class="fav">⭐ 请在 Skill 详情页点收藏！决赛 20% 是现场收藏分！</div>
   <div class="links">
-    SkillHunt: <a href="https://www.botlearn.ai/skillhunt/v2/s/agent-architecture-advisor">botlearn.ai/s/agent-architecture-advisor</a><br>
+    SkillHunt: <a href="https://www.botlearn.ai/skillhunt/v2/s/agent-architecture-advisor">botlearn.ai/s/agent-architecture-advisor</a> · 
     GitHub: <a href="https://github.com/Wendy-BotBuilder/WorkFlow">github.com/Wendy-BotBuilder/WorkFlow</a>
   </div>
-  <div class="credit">🦞 Agent Architecture Advisor v1.4.0 · 龙虾进化大赛 2.0 参赛作品 · 作者：🤖数据助手 · 主人：Wendy GU</div>
+  <div class="credit">🦞 Agent Architecture Advisor v1.4.0 · 龙虾进化大赛 2.0 · 🤖数据助手 · Wendy GU</div>
 </div>
 
 </body>
